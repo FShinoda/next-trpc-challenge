@@ -8,38 +8,48 @@ import Link from "next/link";
 import { createTask, updateTask } from "../actions";
 import { startTransition } from "react";
 import { toast } from "sonner";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { trpc } from "../_trpc/client";
 
 
 
 export default function Page() {
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const idParam = searchParams.get('id');
   
+  const utils = trpc.useUtils();
+  const { data: taskinfo } = idParam ? 
+    trpc.tasks.getTaskById.useQuery({ id: idParam }) : 
+    { data: undefined };
+
   const handleSubmit = (data: FormData) => {
-    startTransition( async () => {
-      console.log('teste:', idParam)
+    startTransition(async () => {
       if (idParam) {
         try {
-          await updateTask(idParam, data)
-          toast.success('Tarefa atualizada com sucesso!')
+          await updateTask(idParam, data);
 
-        } catch ( err ){
-          toast.error('Algo deu errado.')
+          utils.tasks.getTasks.invalidate();
+          utils.tasks.getTaskById.invalidate({ id: idParam });
+          toast.success('Tarefa atualizada com sucesso!');
+
+          router.push('/');
+        } catch (err) {
+          toast.error('Algo deu errado.');
         }
+
       } else {
         try {
-          await createTask(data)
-          toast.success('Tarefa criada com sucesso!')
+          await createTask(data);
+          utils.tasks.getTasks.invalidate();
+          toast.success('Tarefa criada com sucesso!');
+          router.push('/');
         } catch (err) {
-          toast.error('Algo deu errado.')
+          toast.error('Algo deu errado.');
         }
       }
-    })
-  }
-
-  const taskinfo = idParam && trpc.tasks.getTaskById.useQuery({id: idParam}).data
+    });
+  };
 
   return (
     <div className="space-y-6">

@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Desafio tRPC com Next.js 15 + React.js
 
-## Getting Started
+## Para rodar o projeto:
 
-First, run the development server:
+### 1. Instale as dependências
+```bash
+npm i
+```
+### 2. Rode o servidor
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Desafios
+- Mexi apenas uma vez em um bootcamp com context e não era dentro do tRPC (até porque não havia trabalhado com ele até hoje) por isso também tive dificuldades e uma forma de poder realizar o gerenciamento de estado da aplicação (lista de tarefas) foi utilizado uma variável global dentro do context do tRPC;
+- Outro desafio foi usar validação do zod. Em meu trabalho normalmente uso ele junto com um hook customizado para formulários do projeto, quando tive que aplicar aqui, não consegui. Precisaria de mais tempo para estudar a documentação e entender como aplicar. Apesar disso um plano de contingência foi usar `required` no campo de titulo. Mas entendo que o ideal seria retornar esse erro de validação pelo zod e então usar um AutoAnimated para renderizar o erro retornado abaixo do respectivo campo que não foi devidamente inputado;
+- Para os estados de carregamento também tive dificuldade de entender como aplicar pois é outra coisa que percebi que o custom hook de onde trabalho faz de forma mais fácil porém encapsulada. Se tivesse mais tempo para investigar, diria que tem a ver com estados da aplicação (useState) e talvez algum outro hook;
+- Sobre o infinite scroll acredito que conseguiria implementar caso conseguisse estudar mais um pouco. Lembro de já ter implementado algo parecido com um campo de busca de empregados usando useInfiniteQuery;
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Apesar das frustrações dos desafios, foi bom perceber que algumas coisas preciso aprender a fazer "from scratch" sem dependender de como realizo no dia a dia de forma customizada e facilitada. Com certeza tenho muito a aprender e saio um pouco frustrada desse desafio pois queria conseguir concluí-lo por completo com mais cuidado e tempo também.
