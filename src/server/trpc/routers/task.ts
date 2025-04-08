@@ -46,11 +46,15 @@ export const taskRouter = createTRPCRouter({
   .mutation(({input, ctx}) => {
     const taskIndex = ctx.tasks.findIndex((task) => task.id === input.id)
 
-    if (taskIndex === -1) throw new Error("Essa tarefa não foi encontrada.")
+    if (taskIndex === -1) { throw new Error("Essa tarefa não foi encontrada.") }
+
+    console.log('aaaa')
     
     const filteredTasks = ctx.tasks.filter((task) => task.id !== input.id)
 
+    console.log('aaa:', ctx.tasks)
     ctx.tasks = filteredTasks
+    console.log('bbb:', ctx.tasks)
   })
 });
 

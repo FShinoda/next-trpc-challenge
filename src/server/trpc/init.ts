@@ -8,8 +8,14 @@ interface Task {
   dataCriacao: Date
 }
 
+declare global { // NÃO IDEAL PARA PROD, MAS DESSA FORMA AS TASKS SÃO PERSISTIDAS A CADA CICLO DE VIDA DO SERVIDOR
+  var tasks: Task[];
+}
+
+global.tasks = global.tasks || []
+
 export const createTRPCContext = cache(async () => {
-  return { tasks: [{id: 'abcd', titulo: 'teste', descricao: 'fazer teste', dataCriacao: new Date()}] as Task[] };
+  return { tasks: global.tasks };
 });
 
 type Context = Awaited<ReturnType<typeof createTRPCContext>>;

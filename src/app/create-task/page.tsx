@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { createTask } from "./actions";
+import { createTask } from "../actions";
 
 export default function Page() {
   return (
