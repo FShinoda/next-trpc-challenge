@@ -1,13 +1,41 @@
-'use client'
-
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { trpc } from "./_trpc/client";
+import { serverTrpc } from "./_trpc/serverClient";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
 
-  const todos = trpc.getTodos.useQuery()
+  const tasks = await (await serverTrpc()).tasks.getTasks();
   return (
-    todos?.data?.map((task) => (
-      <p>{task}</p>
-    ))
-  );
+    <div className="space-y-6">
+      <h1 className="text-6xl text-gray-700 uppercase font-semibold text-center">Tarefas</h1>
+      <div className=" w-[500px] space-y-2">
+        <Button size="sm" variant="ghost">
+          <Link href="/create-task" className="flex gap-1 text-neutral-500 items-center text-sm">
+            <Plus className="size-3"/> <p>Criar tarefa</p>
+          </Link>
+        </Button>
+        <div className="border-2 rounded-sm border-gray-100 p-8 space-y-1">
+          {tasks.map((task, index) => (
+            <div className="flex items-center justify-between border border-gray-200 py-3 px-4 rounded-sm" key={index}>
+              <div className="flex gap-2 items-end">
+                <p className="text-xs text-gray-600">{index + 1}.</p>
+                <p className="text-gray-700 font-semibold leading-5">{task.titulo}</p>
+              </div>
+              <div>
+                <Button variant="ghost" size="icon" className="cursor-pointer">
+                  <Pencil className="size-5 text-gray-500" />
+                </Button>
+                <Button variant="ghost" size="icon" className="cursor-pointer">
+                  <Trash2 className="size-5 text-red-400" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+    </div>
+  )
 }

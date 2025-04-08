@@ -1,13 +1,9 @@
 import { z } from 'zod';
 import { baseProcedure, createTRPCRouter } from '../init';
-import { tasksRouter } from './tasks';
+import { taskRouter } from './task';
 
 export const appRouter = createTRPCRouter({
-  getTodos: baseProcedure
-    .query(() => {
-      return [10, 20, 30];
-    }),
-  tasks: tasksRouter
+  tasks: taskRouter
 });
 
 export type AppRouter = typeof appRouter;

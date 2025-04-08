@@ -17,8 +17,6 @@ export default function Provider({children}: {children: React.ReactNode}) {
     })
   );
 
-  console.log(trpc)
-
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
