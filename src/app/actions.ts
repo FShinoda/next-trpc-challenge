@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { serverTrpc } from "./_trpc/serverClient";
 
 export async function createTask(formData: FormData) {
-  const titulo = formData.get('titulo') as string;
+  const titulo = formData.get('titulo') 
   const descricao = formData.get('descricao') as string;
   
   if (!titulo || typeof titulo !== 'string') {
@@ -22,15 +22,25 @@ export async function createTask(formData: FormData) {
 export async function deleteTask(id: string) {
   try {
     await (await serverTrpc()).tasks.deleteTask({ id });
-    
+    revalidatePath('/');
   } catch (err) {
     console.error('Error deleting task:', err);
   }
 }
 
-export async function updateTask(id: string) {
+export async function updateTask(id: string, formData: FormData) {
   try {
-    await (await serverTrpc()).tasks.updateTask({ id });
+    const titulo = formData.get('titulo') 
+    const descricao = formData.get('descricao') as string;
+
+    if (!titulo || typeof titulo !== 'string') {
+      throw new Error('Titulo inválido');
+    }
+
+    await (await serverTrpc()).tasks.updateTask({ id, titulo, descricao });
+
+    revalidatePath(`/form?id=${id}`);
+    revalidatePath('/');
 
   } catch (err) {
     console.error('Error updating task:', err);

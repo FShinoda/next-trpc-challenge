@@ -18,13 +18,21 @@ export const taskRouter = createTRPCRouter({
   getTasks: baseProcedure.query(async ({ctx}) => {
     return ctx.tasks
   }),
+  getTaskById: baseProcedure.input(updateTaskSchema)
+  .query(async ({input, ctx}) => {
+    const task = ctx.tasks.find((task) => task.id === input.id);
+
+    if (!task) throw new Error("Essa tarefa não foi encontrada.");
+
+    return task;
+  }),
   createTask: baseProcedure
     .input(createTaskSchema)
     .mutation(({input, ctx}) => {
       const newTask = {...input, id: randomUUID(), dataCriacao: new Date()}
-      console.log(ctx.tasks)
+
       ctx.tasks.push(newTask)
-      console.log(ctx.tasks)
+
       return newTask
     }),
   updateTask: baseProcedure
@@ -48,13 +56,7 @@ export const taskRouter = createTRPCRouter({
 
     if (taskIndex === -1) { throw new Error("Essa tarefa não foi encontrada.") }
 
-    console.log('aaaa')
-    
-    const filteredTasks = ctx.tasks.filter((task) => task.id !== input.id)
-
-    console.log('aaa:', ctx.tasks)
-    ctx.tasks = filteredTasks
-    console.log('bbb:', ctx.tasks)
+    ctx.tasks.splice(taskIndex, 1)
   })
 });
 
